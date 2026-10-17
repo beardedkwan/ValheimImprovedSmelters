@@ -81,7 +81,7 @@ namespace ImprovedSmelters
 
             // windmill
             ImprovedSmeltersConfig.WindmillMaxOre = Config.Bind("Windmill", "WindmillMaxOre", 50, "Maximum items for windmill");
-            ImprovedSmeltersConfig.SWSecondsPerProduct = Config.Bind("Windmill", "SWSecondsPerProduct", 3f, "Seconds per product for windmill");
+            ImprovedSmeltersConfig.SWSecondsPerProduct = Config.Bind("Windmill", "WMSecondsPerProduct", 3f, "Seconds per product for windmill");
 
             // add all
             ImprovedSmeltersConfig.EnableAddAll = Config.Bind("Add All", "EnableAddAll", true, "Flag to enable add all functionality for smelters.\nThis will fill the smelter from your inventory when you use Shift+F to load the smelter.");
@@ -154,9 +154,9 @@ namespace ImprovedSmelters
             {
                 // Check if Shift key is held down and F is pressed
                 string keyUse = ImprovedSmeltersConfig.UseKey.Value;
-                if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown((KeyCode)Enum.Parse(typeof(KeyCode), keyUse)) && ImprovedSmeltersConfig.EnableAddAll.Value)
+                if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey((KeyCode)Enum.Parse(typeof(KeyCode), keyUse)) && ImprovedSmeltersConfig.EnableAddAll.Value)
                 {
-                    //UnityEngine.Debug.Log("Hit Shift+F OnAddFuel (Adding all fuel)");
+                    UnityEngine.Debug.Log("Hit Shift+F OnAddFuel (Adding all fuel)");
 
                     float fuelInSmelter = Traverse.Create(__instance).Method("GetFuel").GetValue<float>();
                     float fuelToAdd = __instance.m_maxFuel - fuelInSmelter;
@@ -175,11 +175,11 @@ namespace ImprovedSmelters
 
                         for (int i = 0; i < fuelToAdd; i++)
                         {
-                            ___m_nview.InvokeRPC("AddFuel");
+                            ___m_nview.InvokeRPC("RPC_AddFuel");
                         }
                     }
 
-                    //UnityEngine.Debug.Log("Added all fuel");
+                    UnityEngine.Debug.Log("Added all fuel");
 
                     __result = false; // Return false to prevent the original method from executing
                     return false;
@@ -213,12 +213,12 @@ namespace ImprovedSmelters
                 string keyUse = ImprovedSmeltersConfig.UseKey.Value;
                 if (Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown((KeyCode)Enum.Parse(typeof(KeyCode), keyUse)) && ImprovedSmeltersConfig.EnableAddAll.Value)
                 {
-                    //UnityEngine.Debug.Log("Hit Shift+F OnAddFuel (Adding all ore)");
+                    UnityEngine.Debug.Log("Hit Shift+F OnAddFuel (Adding all ore)");
 
                     float oreInSmelter = Traverse.Create(__instance).Method("GetQueueSize").GetValue<int>();
                     float oreToAdd = __instance.m_maxOre - oreInSmelter;
 
-                    Inventory playerInventory = user.GetInventory();
+                    //Inventory playerInventory = user.GetInventory();
                     ItemDrop.ItemData item = Traverse.Create(__instance).Method("FindCookableItem", user.GetInventory()).GetValue<ItemDrop.ItemData>();
 
                     if (oreToAdd > 0 && ___m_nview != null && item != null)
@@ -232,11 +232,11 @@ namespace ImprovedSmelters
 
                         for (int i = 0; i < oreToAdd; i++)
                         {
-                            ___m_nview.InvokeRPC("AddOre", item.m_dropPrefab.name);
+                            ___m_nview.InvokeRPC("RPC_AddOre", item.m_dropPrefab.name, item.m_cheated);
                         }
                     }
 
-                    //UnityEngine.Debug.Log("Added all ore");
+                    UnityEngine.Debug.Log("Added all ore");
 
                     __result = false; // Return false to prevent the original method from executing
                     return false;
