@@ -1,0 +1,44 @@
+
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build",
+      "type": "process",
+      "command": "bash",
+      "args": [
+        "-c",
+        "source \"$1\" && build",
+        "_",
+        "${workspaceFolder}/scripts/mod-tools.sh"
+      ],
+      "problemMatcher": ["$msCompile"],
+      "group": "build"
+    },
+    {
+      "label": "Deploy",
+      "type": "process",
+      "command": "bash",
+      "args": [
+        "-c",
+        "source \"$1\" && deploy",
+        "_",
+        "${workspaceFolder}/scripts/mod-tools.sh"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Build + Deploy",
+      "dependsOn": [
+        "Build",
+        "Deploy"
+      ],
+      "dependsOrder": "sequence",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    }
+  ]
+}

@@ -4,16 +4,16 @@
 # CONFIG
 
 # Project repository path
-SMELTERS_REPO="$HOME/Projects/Valheim/ValheimImprovedSmelters"
+MOD_REPO="$HOME/Projects/Valheim/ValheimImprovedSmelters"
 
 # r2modman Development profile
-SMELTERS_PROFILE="$HOME/.var/app/io.github.ebkr.r2modman/config/r2modmanPlus-local/Valheim/profiles/Development/"
+R2_PROFILE="$HOME/.var/app/io.github.ebkr.r2modman/config/r2modmanPlus-local/Valheim/profiles/Development/"
 
 
 # Build ImprovedSmelters
-smbuild() {
+build() {
     (
-        cd "$SMELTERS_REPO" || exit 1
+        cd "$MOD_REPO" || exit 1
 
         msbuild ImprovedSmelters.sln \
             /p:Configuration=Debug \
@@ -22,9 +22,9 @@ smbuild() {
 }
 
 # Deploy the compiled DLL
-smdeploy() {
-    local dll="$SMELTERS_REPO/ImprovedSmelters/bin/Debug/ImprovedSmelters.dll"
-    local plugins="$SMELTERS_PROFILE/BepInEx/plugins"
+deploy() {
+    local dll="$MOD_REPO/ImprovedSmelters/bin/Debug/ImprovedSmelters.dll"
+    local plugins="$R2_PROFILE/BepInEx/plugins"
 
     if [[ ! -f "$dll" ]]; then
         echo "Error: Compiled DLL not found."
@@ -43,7 +43,7 @@ smdeploy() {
 }
 
 # Build and deploy
-smtest() {
-    smbuild && smdeploy
+test() {
+    build && deploy
 }
 
